@@ -34,7 +34,7 @@ app.get("/db", async (req, res) => {
 app.get("/teams/", async (req, res) => {
     try {
         const client = await pool.connect();
-        const result = await client.query(`SELECT * FROM teams'`);
+        const result = await client.query(`SELECT * FROM teams`);
         const results = {'teams': result ? result.rows : null}
         res.send(results)
     } catch (err) {

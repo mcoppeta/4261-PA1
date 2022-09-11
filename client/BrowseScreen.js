@@ -12,6 +12,7 @@ export default function BrowseScreen(props) {
   useEffect(() => {
     axios.get(url)
         .then(res => {
+            console.log(res.data)
             for (let y=0; y<res.data['teams'].length; y++) {
                 let point = res.data['events'][y]
                 setTeams(old => [...old, point])
