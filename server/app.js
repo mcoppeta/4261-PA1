@@ -40,7 +40,7 @@ app.post('/user', urlencodedParser, async (req, res) => {
         res.json({'status': 'success'});
     } catch (err) {
         console.error(err);
-        res.json("Invalid input - user may already exist");
+        res.json({'status': "Invalid input - user may already exist"});
     }
 });
 
