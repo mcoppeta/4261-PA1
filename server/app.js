@@ -27,6 +27,8 @@ app.get("/db", async (req, res) => {
     }
 })
 
+app.use(express.json());
+
 app.post('/user', async (req, res) => {
     try {
         const client = await pool.connect();
