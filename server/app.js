@@ -30,6 +30,7 @@ app.get("/db", async (req, res) => {
 app.post('/user', async (req, res) => {
     try {
         const client = await pool.connect();
+        console.log(req)
         const result = await client.query(`INSERT INTO test_table VALUES (${req.body.username}, ${req.body.password})`)
         res.send(result)
     } catch (err) {
