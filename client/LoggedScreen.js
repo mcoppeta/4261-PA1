@@ -36,6 +36,7 @@ export default function LoggedScreen(props) {
                         <View key={item.id} style={styles.item} >
                             <Text>{item.team}</Text>
                             <Text>{item.title}</Text>
+                            <Text>{item.date}</Text>
                         </View>
                     )
                 }) : ""
