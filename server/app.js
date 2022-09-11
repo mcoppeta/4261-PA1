@@ -36,8 +36,7 @@ app.get("/db", async (req, res) => {
 app.post('/user', urlencodedParser, async (req, res) => {
     try {
         const client = await pool.connect();
-        console.log(req.body)
-        const result = await client.query(`INSERT INTO test_table VALUES (${req.body.username}, ${req.body.password})`)
+        const result = await client.query(`INSERT INTO users (username, password, notifications) VALUES (${req.body.username}, ${req.body.password}, ${req.body.notifications})`)
         res.send(result)
     } catch (err) {
         console.error(err)
@@ -49,7 +48,20 @@ app.post('/user/login', urlencodedParser, async (req, res) => {
     try {
         const client = await pool.connect();
         const result = await client.query(`SELECT password FROM users WHERE username=${req.body.username}`)
-        res.send(result)
+        const expected = result.rows[0]['password'] || null;
+
+        if (!expected) {
+            let ret = {'status': 'User not found'};
+            res.json(ret);
+        }
+
+        if (req.body.password == expected) {
+            let ret = {'status': 'Success'}
+            res.json(ret);
+        } else {
+            let ret = {'status': 'Incorrect username or password'};
+            res.json(ret);
+        }
     } catch (err) {
         res.send("Error " + err)
     }
