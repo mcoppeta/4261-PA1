@@ -1,0 +1,32 @@
+This is a text file to represent my database schema, since it is stored on a postgreSQL server attached to my 
+Heroku backend, so the text is not directly accessible - I edit it through the command line.
+
+CREATE TABLE users (
+    id serial,
+    username varchar NOT NULL PRIMARY KEY,
+    password varchar NOT NULL,
+    notifications boolean
+);
+
+CREATE TABLE teams (
+    id serial,
+    name varchar NOT NULL PRIMARY KEY
+);
+
+CREATE TABLE events (
+    id serial,
+    title varchar NOT NULL,
+    date date NOT NULL,
+    team varchar,
+    CONSTRAINT fk_team FOREIGN KEY(team) REFERENCES teams(name) ON DELETE CASCADE,
+    PRIMARY KEY (title, date, team)
+);
+
+CREATE TABLE subscriptions (
+    id serial,
+    username varchar,
+    team varchar,
+    CONSTRAINT fk_user FOREIGN KEY(username) REFERENCES users(username) ON DELETE CASCADE,
+    CONSTRAINT fk_team FOREIGN KEY(team) REFERENCES teams(name) ON DELETE CASCADE,
+    PRIMARY KEY (username, team)
+);
