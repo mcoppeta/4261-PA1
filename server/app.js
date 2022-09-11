@@ -33,9 +33,8 @@ app.get("/db", async (req, res) => {
 
 app.get("/teams/:team", async (req, res) => {
     try {
-        console.log(req.params.team)
         const client = await pool.connect();
-        const result = await client.query(`SELECT * FROM events WHERE team=${req.params.team}`);
+        const result = await client.query(`SELECT * FROM events WHERE team='${req.params.team}'`);
         const results = {'events': result ? result.rows : null}
         res.send(results)
     } catch (err) {
