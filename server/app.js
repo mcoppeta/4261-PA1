@@ -57,8 +57,11 @@ app.post('/user/login', urlencodedParser, async (req, res) => {
         }
 
         if (req.body.password == expected) {
-            
-            let ret = {'status': 'success'}
+            subs = await client.query(`SELECT team FROM subscriptions WHERE username=${req.body.username}`);
+            let ret = {
+                'status': 'success',
+                'subs': subs,
+            }
             res.json(ret);
         } else {
             let ret = {'status': 'Incorrect username or password'};
