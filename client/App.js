@@ -5,6 +5,7 @@ import axios from 'axios'
 import qs from 'qs';
 import UserSelect from './UserSelect.js';
 import LoggedScreen from './LoggedScreen.js';
+import BrowseScreen from './BrowseScreen.js';
 
 export default function App() {
   const [logged, setLogged] = useState(false);
@@ -18,7 +19,11 @@ export default function App() {
   } else if (screen == 'LOGGED') {
     //console.log(loggedData['subscriptions'])
     return (
-      <LoggedScreen data={loggedData} />
+      <LoggedScreen data={loggedData} setScreen={setScreen} />
+    )
+  } else if (screen == 'BROWSE') {
+    return (
+      <BrowseScreen data={loggedData} setScreen={setScreen} />
     )
   }
 }

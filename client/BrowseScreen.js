@@ -4,47 +4,36 @@ import { StyleSheet, Text, View, TextInput, Button, ScrollView } from 'react-nat
 import axios from 'axios'
 import qs from 'qs';
 
-export default function LoggedScreen(props) {
+export default function BrowseScreen(props) {
   const url = "https://pa1-4261.herokuapp.com/teams/"
   let subs = props.data['subscriptions']
-  let [events, setEvents] = useState([])
+  let [teams, setTeams] = useState([])
 
   useEffect(() => {
-  for (let i=0; i<subs.length; i++) {
-    let team = subs[i]
-    axios.get(url + team)
+    axios.get(url)
         .then(res => {
-            for (let y=0; y<res.data['events'].length; y++) {
+            for (let y=0; y<res.data['teams'].length; y++) {
                 let point = res.data['events'][y]
-                point['team'] = team
-                setEvents(old => [...old, point])
+                setTeams(old => [...old, point])
             }
         })
         .catch(e => {
             console.log(e)
         })
-    }
-  }, [subs])
-  
-  function toBrowse() {
-    props.setScreen('BROWSE')
-  }
+    }, [subs])
   
   return (
     <View style={styles.container}>
-        <Text style={styles.header}>Welcome, {props.data['username']}!</Text>
-        <Button title='Browse Schedules' onPress={toBrowse} />
+        <Text style={styles.header}>Browse Schedules</Text>
         <ScrollView>
             {
-                events[0] ? events.map((item) => {
+                teams[0] ? events.map((item) => {
                     return (
                         <View key={item.id} style={styles.item} >
                             <View style={styles.horizontal}>
-                              <Text>{item.team}</Text>
-                              <Text>{item.date}</Text>
+                              <Text>{item.name}</Text>
+                              <Button title='Subscribe' />
                             </View>
-                            <Text>{item.title}</Text>
-                            
                         </View>
                     )
                 }) : ""
