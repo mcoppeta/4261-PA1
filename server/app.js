@@ -1,6 +1,10 @@
+const bodyParser = require('body-parser');
 const express = require('express');
+const { url } = require('inspector');
 const app = express();
 app.use(express.static('public'));
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
 
 const { Pool } = require('pg')
 const pool = new Pool({
@@ -27,12 +31,12 @@ app.get("/db", async (req, res) => {
     }
 })
 
-app.use(express.json());
+//app.use(express.json());
 
-app.post('/user', async (req, res) => {
+app.post('/user', urlencodedParser, async (req, res) => {
     try {
         const client = await pool.connect();
-        console.log(req)
+        console.log(req.body)
         const result = await client.query(`INSERT INTO test_table VALUES (${req.body.username}, ${req.body.password})`)
         res.send(result)
     } catch (err) {
@@ -41,7 +45,7 @@ app.post('/user', async (req, res) => {
     }
 });
 
-app.post('/user/login', async (req, res) => {
+app.post('/user/login', urlencodedParser, async (req, res) => {
     try {
         const client = await pool.connect();
         const result = await client.query(`SELECT password FROM users WHERE username=${req.body.username}`)
