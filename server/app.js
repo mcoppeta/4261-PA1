@@ -60,7 +60,7 @@ app.post('/user/login', urlencodedParser, async (req, res) => {
             subs = await client.query(`SELECT team FROM subscriptions WHERE username=${req.body.username}`);
             let ret = {
                 'status': 'success',
-                'subs': subs,
+                'subs': subs.rows,
             }
             res.json(ret);
         } else {
