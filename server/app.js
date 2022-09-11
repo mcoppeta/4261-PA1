@@ -27,6 +27,27 @@ app.get("/db", async (req, res) => {
     }
 })
 
+app.post('/user', async (req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query(`INSERT INTO test_table VALUES (${req.body.username}, ${req.body.password})`)
+        res.send(result)
+    } catch (err) {
+        console.error(err)
+        res.send("Error " + err)
+    }
+});
+
+app.post('/user/login', async (req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query(`SELECT password FROM users WHERE username=${req.body.username}`)
+        res.send(result)
+    } catch (err) {
+        res.send("Error " + err)
+    }
+});
+
 app.listen(process.env.PORT || 3000, //necessary for deployment
     () => {
         console.log("Started Server");
