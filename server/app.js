@@ -57,6 +57,17 @@ app.get("/teams/:team", async (req, res) => {
 
 //app.use(express.json());
 
+app.post('/teams/:team/sub/:username', urlencodedParser, async (req, res) => {
+    try {
+        const client = await pool.connect();
+        const result = await client.query(`INSERT INTO subscriptions (username, team) VALUES (${req.body.username}, ${req.body.team})`)
+        res.json({'status': 'success'});
+    } catch (err) {
+        console.error(err);
+        res.json({'status': "Error"});
+    }
+});
+
 app.post('/user', urlencodedParser, async (req, res) => {
     try {
         const client = await pool.connect();

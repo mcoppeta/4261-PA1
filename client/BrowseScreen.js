@@ -14,7 +14,7 @@ export default function BrowseScreen(props) {
         .then(res => {
             console.log(res.data)
             for (let y=0; y<res.data['teams'].length; y++) {
-                let point = res.data['events'][y]
+                let point = res.data['teams'][y]
                 setTeams(old => [...old, point])
             }
         })
@@ -22,18 +22,28 @@ export default function BrowseScreen(props) {
             console.log(e)
         })
     }, [subs])
+
+  function sub(name) {
+    axios.post(url + name + "/sub/" + props.data['username'])
+        .then(res => {
+            console.log(res.data)
+        })
+        .catch(e => {
+            console.log(e)
+        })
+  }
   
   return (
     <View style={styles.container}>
         <Text style={styles.header}>Browse Schedules</Text>
         <ScrollView>
             {
-                teams[0] ? events.map((item) => {
+                teams[0] ? teams.map((item) => {
                     return (
                         <View key={item.id} style={styles.item} >
                             <View style={styles.horizontal}>
                               <Text>{item.name}</Text>
-                              <Button title='Subscribe' />
+                              <Button title='Subscribe' onPress={() => sub(item.name)} />
                             </View>
                         </View>
                     )
@@ -51,6 +61,9 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingHorizontal: 20,
   },
+  unsub: {
+    color: 'red',
+  },
   item: {
     marginTop: 24,
     padding: 30,
@@ -59,7 +72,8 @@ const styles = StyleSheet.create({
   },
   horizontal: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   header: {
     paddingTop: 10,

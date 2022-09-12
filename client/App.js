@@ -23,7 +23,7 @@ export default function App() {
     )
   } else if (screen == 'BROWSE') {
     return (
-      <BrowseScreen data={loggedData} setScreen={setScreen} />
+      <BrowseScreen data={loggedData} setData = {setLoggedData} setScreen={setScreen} />
     )
   }
 }
