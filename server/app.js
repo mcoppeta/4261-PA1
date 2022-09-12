@@ -57,10 +57,10 @@ app.get("/teams/:team", async (req, res) => {
 
 //app.use(express.json());
 
-app.post('/teams/:team/sub/:username', urlencodedParser, async (req, res) => {
+app.post('/teams/:team/sub/:username', async (req, res) => {
     try {
         const client = await pool.connect();
-        const result = await client.query(`INSERT INTO subscriptions (username, team) VALUES ('${req.body.username}', '${req.body.team}')`)
+        const result = await client.query(`INSERT INTO subscriptions (username, team) VALUES ('${req.params.username}', '${req.params.team}')`)
         res.json({'status': 'success'});
     } catch (err) {
         console.error(err);
